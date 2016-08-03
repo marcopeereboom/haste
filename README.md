@@ -104,7 +104,7 @@ The fields contained in params are:
 | JobID          | ID of the job. Used when submitting a solved shared to the server.                             | 76df |
 | PrevHash       | Hash of the previous block.  Used when deriving work.                                          | 7817c24aa99f3999a57dcfc8a7a834f92ebb442f8d519dbd000009e000000000 |
 | CoinBase1      | Initial part of the coinbase transaction.  Used when deriving work.                            | d52f367013ddc74d61a4f50c0d47c4b8e87b6d89a603a04447bcd2b110c508e31d37308253d38bbe0464508f4eb1f12b92e6431d41b01f01518d2d9b9b64fe93010098588e9b1c650500030052a90000b778171a134e691e01000000b1c70000ce0f0000d052a1570000000000000000 |
-| CoinBase2      | **FUTURE** Explain haste use for proof-of-voting.                                              | **FUTURE** |
+| CoinBase2      | **FUTURE**                                                                                     | **FUTURE** |
 | MerkleBranches | Array of merkle branches.                                                                      | [] |
 | BlockVersion   | Decred block version.  Used when deriving work.                                                | 01000000 |
 | Nbits          | Encoded current network difficulty.  Used for informational purposes.                          | 1a1778b7 |
@@ -132,12 +132,27 @@ two 64-byte units of the block header.
 
 ### Performing Hashing / Mining
 
-The midstate is then passed to the device code.  Mining is performed by incrementing
-the nonce and the device code currently returns whenever a difficulty 1 share
-is found.  The target is checked by the mining program and false positives below
-target are discarded and hashing resumes.
+The midstate is then passed to the hashing code that runs on the device.  Mining
+is performed by incrementing the nonce and the device code currently returns
+whenever a difficulty 1 share is found.  The returned value is then checked against
+the mining target.
 
-If a valid solution above target is found then the share is prepared and submitted.
+### Validating Work
+
+The stratum difficulty is converted to a standard mining target by taking the
+highest allowed proof-of-work value that a Decred block can have and dividing
+that value by the stratum difficulty.  The value for the main network is
+2^224 - 1 and the value for the test network is 2^232 - 1.
+
+The block header template generated above is then copied and modified to
+construct a finalized block header. This is done by overwriting the timestamp
+using the Ntime from the current job and the nonce found from the device. A
+hash of the finalized block header is then taken and compared to the difficulty
+target.
+
+If the hash of the finalized block header is below target then the share is
+submitted to the stratum server for validation.  Otherwise the false positive
+is discarded, work is possibly updated, and hashing resumes.
 
 #### **TODO** Explain conversion from stratum difficulty to target somewhere.
 
