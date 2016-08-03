@@ -168,13 +168,13 @@ is discarded, work is possibly updated, and hashing resumes.
 
 The parameters included in the submission and their sources are as follows:
 
-| Field Name                                                 | Example                  |
-| ---------------------------------------------------------- | ------------------------ |
-| Username/Payment Address (User specified)                  | user.worker              |
-| JobID (From Pool)                                          | 187                      |
-| Extra Nonce (Bytes 144 to 156 from finalized block header) | 0100000000188fece3014335 |
-| Ntime (From Pool)                                          | 5783c78e                 |
-| Nonce (From Device)                                        | f6c4e01d                 |
+| Field Name               | Source                                         | Example                  |
+| ------------------------ | ---------------------------------------------- | ------------------------ |
+| Username/Payment Address | User specified                                 | user.worker              |
+| JobID                    | Pool                                           | 187                      |
+| Extra Nonce              | Bytes 144 to 156 from finalized block header   | 0100000000188fece3014335 |
+| Ntime                    | Pool                                           | 5783c78e                 |
+| Nonce                    | Device                                         | f6c4e01d                 |
 
 #### **FUTURE** Proof-of-voting mechanism may require an additional voteString field.
 
