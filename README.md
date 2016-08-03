@@ -99,13 +99,13 @@ to a hashing device. An example message is below:
 
 The fields contained in params are:
 
-| Field Name     | Purpose           | Example  |
-| -------------- | ------------- | ----- |
+| Field Name     | Purpose | Example |
+| -------------- | --- | --- |
 | JobID          | ID of the job. Used when submitting a solved shared to the server.                             | 76df |
 | PrevHash       | Hash of the previous block.  Used when deriving work.                                          | 7817c24aa99f3999a57dcfc8a7a834f92ebb442f8d519dbd000009e000000000 |
 | CoinBase1      | Initial part of the coinbase transaction.  Used when deriving work.                            | d52f367013ddc74d61a4f50c0d47c4b8e87b6d89a603a04447bcd2b110c508e31d37308253d38bbe0464508f4eb1f12b92e6431d41b01f01518d2d9b9b64fe93010098588e9b1c650500030052a90000b778171a134e691e01000000b1c70000ce0f0000d052a1570000000000000000 |
-| CoinBase2      | **TODO** Explain haste use.                                                                    | **TODO** Empty for now |
-| MerkleBranches | Array of merkle branches.  **TODO** Used anywhere?                                             | **TODO** Empty array |
+| CoinBase2      | **FUTURE** Explain haste use for proof-of-voting.                                              | **FUTURE** |
+| MerkleBranches | Array of merkle branches.                                                                      | [] |
 | BlockVersion   | Decred block version.  Used when deriving work.                                                | 01000000 |
 | Nbits          | Encoded current network difficulty.  Used for informational purposes.                          | 1a1778b7 |
 | Ntime          | Server's time when the job was transmitted. Used when submitting a solved share to the server. | 57a152d0 |
@@ -143,11 +143,11 @@ If a valid solution above target is found then the share is prepared and submitt
 
 #### **TODO** Explain Extra Nonce formatting here or in next section.
 
-#### **TODO** Add data formats/pseudo-code for each step when proof-of-voting is complete.
+#### **FUTURE** Adapt once proof-of-voting is complete.
 
 ## Submitting A Share
 
-### Client sends mining.submit message with params from pool/calculated from above
+### Client sends mining.submit message with parameters from pool/calculated from above
 
 ```
 > {"method": "mining.submit", "params": ["user.worker", "187", "0100000000188fece3014335", "5783c78e", "f6c4e01d"], "id":4}
@@ -163,7 +163,7 @@ The fields contained in params are:
 | Ntime (From Pool)        | 5783c78e                 |
 | Nonce                    | f6c4e01d                 |
 
-#### **TODO** Not sure if the proof-of-voting mechanism will required an additional field or not.
+#### **FUTURE** Proof-of-voting mechanism may required an additional voteString field.
 
 ### Server sends true if share accepted or false with error message if share rejected
 
@@ -201,7 +201,7 @@ in general use.  These remain unimplemented in the haste reference stack.
 
 ## Golang Example Code
 
-#### **TODO** Adapt (test) code from gominer as an example once proof-of-voting is functional.
+#### **FUTURE** Adapt (test) code from gominer as an example once proof-of-voting is functional.
 
 # haste 2.0
 
