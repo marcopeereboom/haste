@@ -61,8 +61,6 @@ The fields are:
 {"id":2,"result":true,"error":null}
 ```
 
-### **TODO** Should mention mining.extranonce.subscribe to be complete. Sent by ccminer/sgminer but no server messages are sent other than an initial result:false/true response.  Maybe not widely used?
-
 ## Stratum Work Data And Target
 
 After subscribing to server pushes and performing authorization,
@@ -103,7 +101,7 @@ The fields contained in params are:
 
 | Field Name     | Purpose           | Example  |
 | -------------- | ------------- | ----- |
-| JobID          | ID of the job. Used when submitting a solved shared to the server.                             | 187 |
+| JobID          | ID of the job. Used when submitting a solved shared to the server.                             | 76df |
 | PrevHash       | Hash of the previous block.  Used when deriving work.                                          | 7817c24aa99f3999a57dcfc8a7a834f92ebb442f8d519dbd000009e000000000 |
 | CoinBase1      | Initial part of the coinbase transaction.  Used when deriving work.                            | d52f367013ddc74d61a4f50c0d47c4b8e87b6d89a603a04447bcd2b110c508e31d37308253d38bbe0464508f4eb1f12b92e6431d41b01f01518d2d9b9b64fe93010098588e9b1c650500030052a90000b778171a134e691e01000000b1c70000ce0f0000d052a1570000000000000000 |
 | CoinBase2      | **TODO** Explain haste use.                                                                    | **TODO** Empty for now |
@@ -112,10 +110,6 @@ The fields contained in params are:
 | Nbits          | Encoded current network difficulty.  Used for informational purposes.                          | 1a1778b7 |
 | Ntime          | Server's time when the job was transmitted. Used when submitting a solved share to the server. | 57a152d0 |
 | CleanJobs      | When true, discard current work and re-calculate derived work.                                 | false |
-
-### **TODO** Explain Ntime is supposed to be changeable but Decred pools don't seem to support this?
-
-### **TODO** Explain CleanJobs/work management some more but gominer doesn't do any work management at the moment which seems to work okay.  sgminer seems to aggressively queue and discard work.  ccminer seems to only discard current work when cleanjobs: true and roll work (re-use the same work but increment nonce) when no new work is available.
 
 ## Deriving Work And Performing Hashing
 
@@ -182,6 +176,28 @@ message is "job not found" which happens when submitting an old share that was
 solved using stale work.  This is typically a race condition which occurs when
 a new block was just propagated across the network and the miner's work was not
 updated prior to solving the share.
+
+## Stratum Peculiarities and Unused Stratum Extensions
+
+Stratum has some oddities that stem from being rushed into production use with
+little planning and community feedback.  One example is:
+
+* When solo mining, the timestamp of the block header is refers to the
+approximate time when the block was mined.  When using a stratum server, the
+timestamp of the last job (Ntime) is always used instead.  This shouldn't be
+necessary since the JobID refers to the last job already.  Unfortunately,
+this prevents generating new work by simply incrementing the timestamp.
+
+Stratum has some extensions which are either unused by Decred pools or are not
+in general use.  These remain unimplemented in the haste reference stack.
+
+| Method                      | Purpose | Notes |
+| --------------------------- | --- | --- |
+| client.get_version          | Sends version string | Unnecessary / not widely used. |
+| client.reconnect            | Requests that the client reconnect to a specified host/port within | Not widely used. |
+| client.show_message         | Displays string. | Not widely used. |
+| mining.ping                 | Server <-> Client Ping | Unnecessary / not widely used. |
+| mining.extranonce.subscribe | Signals that the client supports the mining.set_extranonce method. | Used to replace initial Extranonce1 / Extranonce2 Length values. |
 
 ## Golang Example Code
 
