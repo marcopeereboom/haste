@@ -122,13 +122,41 @@ Field          | Description                                                    
 Version        | Decred Block header version                                                            | 4 bytes
 PrevHash       | Hash of the previous block                                                             | 32 bytes
 CoinBase1      | Merkle tree hash calculated using all transactions in the block                        | 108 bytes
-TimeStamp      | Job Ntime                                                                              | 4 bytes
-Random Data    | Can be used as a miners mark or as an extra nonce for fast hashing devices like ASICs. | 4 bytes
+
+
+```
+Pseudocode
+
+// Construct Extranonce which is a per-session identifier
+
+ExtraNonce = ""
+ExtraNonce1 = pool.ExtraNonce1
+ExtraNonce2 = Sprintf("%0" + ExtraNonce2Length * 2 + "x", 0)
+
+append(ExtraNonce, ExtraNonce1)
+append(ExtraNonce, ExtraNonce2)
+
+BlockHeaderTemplate = ""
+
+Append(BlockHeaderTemplate, pool.BlockVersion)
+Append(BlockHeaderTemplate, pool.PrevHash)
+Append(BlockHeaderTemplate, pool.CoinBase1)
+Append(BlockHeaderTemplate, 4 random bytes)
+
+Replace(BlockHeaderTemplate[Bytes 140-144], pool.Ntime)
+Replace(BlockHeaderTemplate[Bytes 144-148], ExtraNonce)
+```
 
 ### Calculate Midstate
 
 The midstate is obtained by calling the BLAKE-256 hashing function on the first
 two 64-byte units of the block header.
+
+```
+Pseudocode
+
+MidState = Blake256(BlockHeaderTemplate[Bytes 0 to 128])
+```
 
 ### Performing Hashing / Mining
 
@@ -139,10 +167,21 @@ the mining target.
 
 ### Validating Work
 
-The stratum difficulty is converted to a standard mining target by taking the
+The stratum target is converted to a standard mining difficulty by taking the
 highest allowed proof-of-work value that a Decred block can have and dividing
-that value by the stratum difficulty.  The value for the main network is
+that value by the stratum target.  The value for the main network is
 2^224 - 1 and the value for the test network is 2^232 - 1.
+
+```
+Pseudocode
+
+Network = main | test
+
+mainPowLimit = 2^224 - 1
+testPowLimit = 2^232 - 1
+
+WorkDifficulty = "net"+PowLimit / pool.Target
+```
 
 The block header template generated above is then copied and modified to
 construct a finalized block header. This is done by overwriting the timestamp
@@ -150,7 +189,20 @@ using the Ntime from the current job and the nonce found from the device. A
 hash of the finalized block header is then taken and compared to the difficulty
 target.
 
-#### **TODO** Explain Nonce0/Nonce1 and where they go better.
+```
+Pseudocode
+
+FinalBlockHeader = BlockHeaderTemplate
+
+Replace(FinalBlockHeader[Bytes 140-144], pool.Ntime)
+Replace(FinalBlockHeader[Bytes 144-148], ExtraNonce)
+
+BlockHash = Blake256(FinalBlockHeader)
+
+if (BlockHash < WorkDifficulty) {
+    SubmitShare()
+}
+```
 
 If the hash of the finalized block header is below target then the share is
 submitted to the stratum server for validation.  Otherwise the false positive
