@@ -115,7 +115,7 @@ The fields contained in params are:
 
 ### Converting Stratum Work To "getwork" Style Work
 
-#### Construct a Block Header 
+#### Constructing A Block Header Template
 
 Field          | Description                                                                            | Size
 ---            | ---                                                                                    | ---
@@ -162,21 +162,19 @@ is discarded, work is possibly updated, and hashing resumes.
 
 ### Client constructs and sends mining.submit message
 
-#### **TODO** Explain construction of extra nonce field
-
 ```
 > {"method": "mining.submit", "params": ["user.worker", "187", "0100000000188fece3014335", "5783c78e", "f6c4e01d"], "id":4}
 ```
 
-The fields contained in params are:
+The parameters included in the submission and their sources are as follows:
 
-| Field Name               | Example                  |
-| ------------------------ | ------------------------ |
-| Username/Payment Address | user.worker              |
-| JobID (From Pool)        | 187                      | 
-| Extra Nonce              | 0100000000188fece3014335 |
-| Ntime (From Pool)        | 5783c78e                 |
-| Nonce                    | f6c4e01d                 |
+| Field Name                                                 | Example                  |
+| ---------------------------------------------------------- | ------------------------ |
+| Username/Payment Address (User specified)                  | user.worker              |
+| JobID (From Pool)                                          | 187                      |
+| Extra Nonce (Bytes 144 to 156 from finalized block header) | 0100000000188fece3014335 |
+| Ntime (From Pool)                                          | 5783c78e                 |
+| Nonce (From Device)                                        | f6c4e01d                 |
 
 #### **FUTURE** Proof-of-voting mechanism may required an additional voteString field.
 
