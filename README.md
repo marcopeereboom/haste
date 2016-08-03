@@ -85,7 +85,7 @@ miner to submit at a fixed interval (typically at least once per minute).
 An example of such a message is below:
 
 ```
-{"id":null,"method":"mining.set_difficulty","params":[8]}
+{"id":null,"method":"mining.set_difficulty","params":[1]}
 ```
 
 ### mining.notify
@@ -150,19 +150,19 @@ using the Ntime from the current job and the nonce found from the device. A
 hash of the finalized block header is then taken and compared to the difficulty
 target.
 
+#### **TODO** Explain Nonce0/Nonce1 and where they go better.
+
 If the hash of the finalized block header is below target then the share is
 submitted to the stratum server for validation.  Otherwise the false positive
 is discarded, work is possibly updated, and hashing resumes.
-
-#### **TODO** Explain conversion from stratum difficulty to target somewhere.
-
-#### **TODO** Explain Extra Nonce formatting here or in next section.
 
 #### **FUTURE** Adapt once proof-of-voting is complete.
 
 ## Submitting A Share
 
-### Client sends mining.submit message with parameters from pool/calculated from above
+### Client constructs and sends mining.submit message
+
+#### **TODO** Explain construction of extra nonce field
 
 ```
 > {"method": "mining.submit", "params": ["user.worker", "187", "0100000000188fece3014335", "5783c78e", "f6c4e01d"], "id":4}
