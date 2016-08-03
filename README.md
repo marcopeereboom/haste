@@ -176,7 +176,7 @@ The parameters included in the submission and their sources are as follows:
 | Ntime (From Pool)                                          | 5783c78e                 |
 | Nonce (From Device)                                        | f6c4e01d                 |
 
-#### **FUTURE** Proof-of-voting mechanism may required an additional voteString field.
+#### **FUTURE** Proof-of-voting mechanism may require an additional voteString field.
 
 ### Server sends true if share accepted or false with error message if share rejected
 
