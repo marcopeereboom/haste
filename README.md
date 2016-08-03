@@ -184,11 +184,12 @@ The parameters included in the submission and their sources are as follows:
 {"id":4,"result":true,"error":null}
 ```
 
-Less than 1% of shares submitted should be rejected.  The most typical error
+The reject rate of submitted shares should be about 0.1%. The most typical error
 message is "job not found" which happens when submitting an old share that was
 solved using stale work.  This is typically a race condition which occurs when
 a new block was just propagated across the network and the miner's work was not
-updated prior to solving the share.
+updated prior to solving the share.  Some errors may also be caused by a bug in
+the pool's software.
 
 ## Stratum Peculiarities and Unused Stratum Extensions
 
