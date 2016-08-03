@@ -1,6 +1,6 @@
 # haste
 
-## **PRELIMINARY WORK-IN-PROGRESS**
+## **PRELIMINARY DRAFT**
 
 ## Overview
 
