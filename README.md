@@ -139,11 +139,11 @@ target are discarded and hashing resumes.
 
 If a valid solution above target is found then the share is prepared and submitted.
 
-### **TODO** Explain conversion from stratum difficulty to target somewhere.
+#### **TODO** Explain conversion from stratum difficulty to target somewhere.
 
-### **TODO** Explain Extra Nonce formatting here or in next section.
+#### **TODO** Explain Extra Nonce formatting here or in next section.
 
-### **TODO** Add data formats/pseudo-code for each step when proof-of-voting is complete.
+#### **TODO** Add data formats/pseudo-code for each step when proof-of-voting is complete.
 
 ## Submitting A Share
 
@@ -163,7 +163,7 @@ The fields contained in params are:
 | Ntime (From Pool)        | 5783c78e                 |
 | Nonce                    | f6c4e01d                 |
 
-### **TODO** Not sure if the proof-of-voting mechanism will required an additional field or not.
+#### **TODO** Not sure if the proof-of-voting mechanism will required an additional field or not.
 
 ### Server sends true if share accepted or false with error message if share rejected
 
@@ -194,14 +194,14 @@ in general use.  These remain unimplemented in the haste reference stack.
 | Method                      | Purpose | Notes |
 | --------------------------- | --- | --- |
 | client.get_version          | Sends version string | Unnecessary / not widely used. |
-| client.reconnect            | Requests that the client reconnect to a specified host/port within | Not widely used. |
+| client.reconnect            | Requests that the client reconnect to a specified host/port. | Not widely used. |
 | client.show_message         | Displays string. | Not widely used. |
 | mining.ping                 | Server <-> Client Ping | Unnecessary / not widely used. |
 | mining.extranonce.subscribe | Signals that the client supports the mining.set_extranonce method. | Used to replace initial Extranonce1 / Extranonce2 Length values. |
 
 ## Golang Example Code
 
-### **TODO** Adapt (test) code from gominer as an example once proof-of-voting is functional.
+#### **TODO** Adapt (test) code from gominer as an example once proof-of-voting is functional.
 
 # haste 2.0
 
